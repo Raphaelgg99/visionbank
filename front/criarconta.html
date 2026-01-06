@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta</title>
+    <link rel="stylesheet" href="criarconta.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<header>
+    <nav class="cabecalho">
+        <div class="logo-vision">
+            <a href="#">
+                <img src="logobanco/logo.png" alt="">
+            </a>
+        </div>
+        <a href="paginainicial.html" class="voltar">
+            <i class="fas fa-chevron-left"></i>
+            <span>voltar para o início</span>
+        </a>
+    </nav>
+</header>
+<section class="hero">
+    <div class="lado-esquerdo">
+        <h1>Vamos Começar?</h1>
+        <p>Insira os seus dados para começarmos a criar a sua conta</p>
+        <img src="logobanco/imagem-criarconta.jpg" alt="">
+    </div>
+    <div class="lado-direito">
+        <form id="formulario">
+            <div id="nomeField" class="form-field">
+                <label for="nome">Qual é o seu nome completo?</label>
+                <input type="text" id="nome" name="nome" placeholder="Ex: Maria da Silva" required>
+                <button type="button" id="nextToEmail" class="btn">Continuar
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <!-- Segundo Campo: Email (inicialmente oculto) -->
+            <div id="emailField" class="form-field hidden">
+                <label for="email">Qual é o seu e-mail?</label>
+                <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" required>
+                <button type="button" id="nextToSenha" class="btn">Continuar
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div id="senhaField" class="form-field hidden">
+                <label for="senha">Digite uma senha</label>
+                <input type="password" id="senha" name="senha" required>
+                <button type="button" id="nextToRepetirSenha" class="btn">Continuar
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div id="repetirSenhaField" class="form-field hidden">
+                <label for="senha">Digite uma senha</label>
+                <input type="password" id="repetirSenha" name="repetirSenha" required>
+                <button type="button" id="nextToSaldo" class="btn">Continuar
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div id="saldoField" class="form-field hidden">
+                <label for="saldo">Digite o seu saldo inicial</label>
+                <input type="number" id="saldo" name="saldo" placeholder="Entre 0 e 1.000.000" min="0" max="1000000" step="0.01" required>
+                <button type="submit" id="finalizarCadastro" class="btn">Finalizar
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+<script src="script.js"></script>
+</body>
+</html>

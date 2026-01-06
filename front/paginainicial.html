@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Digital</title>
+    <link rel="stylesheet" href="Paginainicial.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<header>
+    <nav class="menu-cabecalho">
+        <div class="logo">
+            <a href="#"><img src="logobanco/logo.png" alt="Vision Bank Home"></a>
+        </div>
+        <div class="menu-acoes">
+            <a href="#" class="botao-login">Entrar</a>
+            <a href="criarconta.html" class="botao-criar">Criar Conta</a>
+        </div>
+    </nav>
+</header>
+<section class="hero">
+    <div class="texto">
+        <h1><span class="destaque-vision">Vision Bank:</span> Simples, Digital e Seguro.</h1>
+        <p>Um simulador bancário completo na palma da sua mão. Gerencie
+            seu saldo, faça movimentações financeiras em tempo real
+            e acompanhe seu histórico detalhado através de uma
+            plataforma robusta e intuitiva.</p>
+        <a href=#>Simular agora</a>
+    </div>
+    <div class="imagem">
+        <img src="logobanco/imagem-pagina1.jpg" alt="Mulher sorrindo usando notebook e celular">
+    </div>
+</section>
+<section class="como-funciona">
+    <div>
+        <h2>Como funciona?</h2>
+        <div class="step-container">
+            <div class="step">
+                <i class="fa-solid fa-user-plus"></i>
+                <h3>1-Crie sua conta:</h3>
+                <p>Cadastro rápido pedindo apenas o essencial</p>
+            </div>
+            <div class="step">
+                <i class="fa-solid fa-lock"></i>
+                <h3>2-Faça o Login</h3>
+                <p>Acesso seguro para o seu painel</p>
+            </div>
+            <div class="step">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <h3>3-Comece a usar</h3>
+                <p>Simule transações</p>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="rodape">
+    <div class="social-links">
+        <a href="https://github.com/Raphaelgg99/BankApi" target="_blank">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+
+        <a href="https://www.linkedin.com/in/raphaelgguimaraes" target="_blank">
+            <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+    </div>
+
+    <p class="copyright">
+        &copy; 2025 Vision Bank - Desenvolvido por <strong>Raphael Guimarães</strong>.
+    </p>
+</footer>
+
+<div id="modal-login" class="modal-container">
+    <div class="modal-box">
+        <span class="fechar-modal">&times;</span> <h2>Acesse sua conta</h2>
+        <p>Bem-vindo de volta ao Vision Bank!</p>
+        <form id="modal-login form">
+            <label for="email-login">E-mail</label>
+            <input type="email" id="email-login" placeholder="seu@email.com" required>
+
+            <label for="senha-login">Senha</label>
+            <input type="password" id="senha-login" placeholder="Sua senha" required>
+
+            <button type="submit" class="btn-entrar-modal">Acessar Conta</button>
+        </form>
+    </div>
+</div>
+<script src = "paginainicial.js"></script>
+</body>
+</html>

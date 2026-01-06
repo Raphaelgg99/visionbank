@@ -1,0 +1,360 @@
+:root {
+    --primary-color: blueviolet;; /* Seu roxo */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+.cabecalho {
+    display: flex;
+    /* O PULO DO GATO: space-between joga um item pra cada canto */
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, var(--primary-color) 0%, #6a0dad 100%);
+    height: 70px;
+    /* Padding lateral percentual ou fixo para não colar na borda */
+    padding: 0 40px;
+}
+
+.logo-vision a img{
+    height: 60px; /* Ajuste conforme necessário */
+    /* Removido o padding-right gigante! */
+}
+
+#sair{
+    text-decoration: none; /* Tira o sublinhado padrão */
+    color: white;
+    display: flex;
+    align-items: center; /* Alinha o ícone com o texto */
+    gap: 10px; /* Espaço entre a setinha e o texto */
+    transition: opacity 0.3s; /* Efeito suave ao passar o mouse */
+}
+
+#sair span {
+    font-family: 'Lato', sans-serif; /* Garante a mesma fonte do site */
+    font-weight: 600; /* Um pouco mais negrito para facilitar leitura */
+    font-size: 14px;  /* Tamanho discreto, mas legível */
+    text-transform: lowercase; /* Tudo minúsculo dá um ar mais moderno e direto */
+    letter-spacing: 0.5px; /* Leve espaçamento entre letras */
+}
+
+#saldo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente se sobrar espaço */
+
+    /* IMPORTANTE: Padding interno cria o espaço da borda para o texto */
+    padding: 30px 40px;
+    margin: 20px; /* Espaço externo (afasta do topo e lados) */
+
+    background: linear-gradient(180deg, var(--primary-color) 0%, #6a0dad 100%);
+    border-radius: 20px;
+
+    /* Correção de Leitura e Estilo */
+    color: #fff; /* Texto branco */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Sombra suave para dar profundidade */
+}
+
+/* 2. Saudação "Olá, NomeUsuario" */
+/* Como você não tem classe, vamos pegar o span direto filho de #saldo */
+/* Removemos as margens excessivas dos spans filhos */
+#saldo span {
+    margin: 0;
+}
+
+#saldo #saldacao {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 30px; /* Espaço entre o 'Olá' e o saldo */
+}
+
+/* Estilização específica para o bloco do valor */
+#saldo div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#saldo div span:nth-child(1) { /* Texto "Meu Saldo" */
+    font-size: 14px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#saldo div span:nth-child(2) { /* O Valor "0,00" */
+    font-size: 40px; /* Tamanho grande destaque */
+    font-weight: 700;
+}
+
+.transacoes {
+    display: flex;
+    justify-content: space-between; /* Distribui espaço igual entre eles */
+    gap: 15px; /* Espaço entre os botões */
+    margin: 20px; /* Alinha com a margem do card de saldo */
+    padding: 0 10px;
+    flex-wrap: wrap; /* Permite que quebrem linha em celular muito pequeno */
+}
+
+/* Estilizando o Link para parecer um Botão */
+/* =========================================
+   ESTILOS DOS BOTÕES DO HEADER
+   ========================================= */
+
+/* Estilo unificado para os Links que parecem botões */
+.transacoes a {
+    flex: 1; /* Faz todos terem a mesma largura */
+    text-align: center; /* Centraliza o texto no botão */
+
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #6a0dad; /* Cor sólida é mais limpa para botões pequenos */
+    /* Se quiser manter gradiente: background: linear-gradient(...) */
+
+    font-family: 'Lato', sans-serif;
+    font-size: 16px; /* Tamanho legível e profissional (estava 30px) */
+    font-weight: 600;
+
+    padding: 15px 0; /* Altura do botão */
+    border-radius: 50px; /* Pílula */
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Efeito Hover */
+.transacoes a:hover {
+    background-color: #8327cc;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Container principal do histórico */
+#historico {
+    margin: 30px 20px; /* Alinhado com o restante da página */
+    font-family: 'Lato', sans-serif;
+}
+
+#historico h3 {
+    color: #4a4a4a; /* Cinza escuro para o título */
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+/* Estilo da Mensagem de "Sem Transações" */
+#mensagem-vazio {
+    text-align: center;
+    padding: 40px;
+    background-color: #f8f9fa; /* Fundo cinza bem clarinho */
+    border-radius: 15px;
+    border: 1px dashed #ccc; /* Borda pontilhada dá ideia de espaço vazio */
+    color: #888;
+}
+
+/* Container da tabela (para dar o efeito de card branco) */
+.tabela-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Sombra bem leve */
+    padding: 10px;
+    overflow: hidden; /* Garante que a tabela não saia das bordas arredondadas */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaços entre as células */
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee; /* Linha fina separando itens */
+}
+
+/* Cabeçalho da tabela */
+th {
+    color: #6a0dad; /* Roxo da marca */
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Estilização dos Valores */
+.text-right {
+    text-align: right;
+}
+
+.entrada {
+    color: #27ae60; /* Verde para dinheiro entrando */
+    font-weight: 600;
+}
+
+.saida {
+    color: #e74c3c; /* Vermelho para dinheiro saindo */
+    font-weight: 600;
+}
+
+/* Efeito ao passar o mouse na linha */
+tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Remove a linha da última borda para ficar bonito */
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Fundo escuro atrás da janela */
+.modal-container {
+    display: none; /* Começa escondido */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo preto transparente */
+    justify-content: center;
+    align-items: center;
+}
+
+/* A caixa branca da janela */
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    animation: descer 0.3s ease-out;
+}
+
+@keyframes descer {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Botão de Fechar (X) */
+.fechar-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+.fechar-modal:hover { color: #000; }
+
+/* Input de valor */
+.input-grupo-modal input {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Botão Confirmar */
+.btn-acao-modal {
+    background-color: #6a0dad; /* Roxo Vision */
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-acao-modal:hover {
+    background-color: #4b0082;
+}
+
+/* =========================== */
+/* ESTILOS DO EXTRATO DETALHADO */
+/* =========================== */
+
+/* Ajuste do tamanho do modal de extrato (mais largo que os outros) */
+.modal-extrato-content {
+    max-width: 800px;
+    width: 90%;
+}
+
+/* Container que permite rolar a tabela se tiver muitos itens */
+.tabela-scroll {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+/* A Tabela em si */
+.tabela-detalhada {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Cabeçalho da tabela */
+.tabela-detalhada thead tr {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+.tabela-detalhada th {
+    padding: 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Células do corpo */
+.tabela-detalhada td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd; /* Linha separadora */
+}
+
+/* Classes para cores dinâmicas (usadas pelo JS) */
+.valor-entrada {
+    color: #2ecc71; /* Verde */
+    font-weight: bold;
+    text-align: right;
+}
+
+.valor-saida {
+    color: #e74c3c; /* Vermelho */
+    font-weight: bold;
+    text-align: right;
+}
+
+.mensagem-vazio {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    display: none; /* Começa oculto */
+}
+
+/* Adicione no seu dashboard.css */
+.ver-tudo-container {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+#link-ver-tudo {
+    color: #6a0dad; /* Roxo do tema */
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#link-ver-tudo:hover {
+    text-decoration: underline;
+}

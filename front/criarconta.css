@@ -1,0 +1,287 @@
+/* Reset básico */
+:root {
+    --primary-color: blueviolet;; /* Seu roxo */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+} 
+
+.cabecalho {
+    display: flex;
+    /* O PULO DO GATO: space-between joga um item pra cada canto */
+    justify-content: space-between; 
+    align-items: center;
+    background: linear-gradient(180deg, var(--primary-color) 0%, #6a0dad 100%);
+    height: 70px;
+    /* Padding lateral percentual ou fixo para não colar na borda */
+    padding: 0 40px; 
+} 
+
+.logo-vision a img{
+    height: 60px; /* Ajuste conforme necessário */
+    /* Removido o padding-right gigante! */
+} 
+
+.voltar{  
+    text-decoration: none; /* Tira o sublinhado padrão */
+    color: white;
+    display: flex;
+    align-items: center; /* Alinha o ícone com o texto */
+    gap: 10px; /* Espaço entre a setinha e o texto */
+    transition: opacity 0.3s; /* Efeito suave ao passar o mouse */
+} 
+
+.voltar span {
+    font-family: 'Lato', sans-serif; /* Garante a mesma fonte do site */
+    font-weight: 600; /* Um pouco mais negrito para facilitar leitura */
+    font-size: 14px;  /* Tamanho discreto, mas legível */
+    text-transform: lowercase; /* Tudo minúsculo dá um ar mais moderno e direto */
+    letter-spacing: 0.5px; /* Leve espaçamento entre letras */
+}
+
+/* Ajuste fino no tamanho do ícone da seta */
+.voltar i {
+    font-size: 10px; /* O ícone fica um pouquinho menor que o texto, fica mais elegante */
+}
+
+/* Efeito ao passar o mouse */
+.voltar:hover {
+    opacity: 0.8; /* Fica ligeiramente transparente */
+} 
+
+.hero{
+    display: flex; 
+    /* Isso garante que a tela ocupe toda a altura disponível menos o header */
+    height: calc(100vh - 70px); 
+    background-color: white;
+} 
+
+.lado-esquerdo{
+    width: 45%; /* Um pouco mais largo que 40% pra dar respiro */
+    background-color: #f8f9fa; /* Um cinza super clarinho e elegante (Off-white) */
+    
+    /* Centraliza tudo verticalmente e horizontalmente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    padding: 40px; /* Espaço interno */
+    text-align: center; /* Texto centralizado */
+}  
+
+/* =========================================
+   ESTILO DOS TEXTOS
+   ========================================= */
+
+.lado-esquerdo h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.lado-esquerdo p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 80%; /* Para o texto não ficar numa linha muito comprida */
+    margin-bottom: 40px; /* Espaço entre o texto e a foto */
+    line-height: 1.5;
+}
+
+/* =========================================
+   ESTILO DA IMAGEM
+   ========================================= */ 
+
+.lado-esquerdo img {
+    width: 100%;          /* Ocupa a largura disponível do container */
+    max-width: 400px;     /* Mas trava em 400px pra não ficar gigante */
+    height: 400px;        /* Altura fixa para manter o formato */
+    object-fit: cover;    /* Corta a imagem para preencher sem esticar a cara da pessoa */
+    
+    /* O arredondamento estilo "App Moderno" */
+    border-radius: 40px;  
+    
+    /* Sombra suave para a foto "flutuar" */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); 
+} 
+
+.lado-direito {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Centraliza o formulário no meio da tela branca */
+    background-color: white;
+    width: 55%; /* Mantém sua largura */
+    
+    /* Removemos bordas e sombras do container pai, 
+       vamos focar a atenção só nos campos */
+    box-shadow: none; 
+    border-radius: 0;
+} 
+
+/* Adicione essa classe para limitar a largura do formulário em si */
+#formulario {
+    width: 100%;
+    max-width: 400px; /* O formulário nunca fica maior que isso */
+    padding: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background: linear-gradient(180deg, var(--primary-color) 0%, #6a0dad 100%);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: linear-gradient(180deg, var(--primary-color) 0%, #6a0dad 100%);
+}
+
+.hidden {
+    display: none;
+}  
+
+label {
+    display: block; /* Garante que fique em cima do input */
+    font-size: 2.2rem; /* Aumenta a letra */
+    font-weight: 700; /* Negrito */
+    color: #333;
+    margin-bottom: 25px; /* Espaço entre a pergunta e a caixa */
+    font-family: 'Lato', sans-serif;
+}
+
+/* --- CAIXAS DE TEXTO (INPUTS) --- */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    width: 100%;
+    padding: 18px; /* Aumentei de 10px para 18px (fica da altura do botão) */
+    margin-top: 15px;
+    margin-bottom: 25px; /* Mais espaço até o botão */
+    
+    border: 2px solid #eff0f6; /* Borda cinza bem clarinha e moderna */
+    border-radius: 16px; /* Arredondamento maior para combinar com o botão */
+    background-color: #fcfcfc; /* Fundo levemente cinza (não branco puro) */
+    
+    font-size: 16px; /* Tamanho bom para ler */
+    color: #1a1a1a;
+    outline: none; /* Tira a borda azul padrão feia */
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+} 
+
+/* Efeito quando clica para digitar */
+input:focus {
+    border-color: var(--primary-color); /* A borda fica roxa! */
+    background-color: white; /* O fundo fica branco para destacar */
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.15); /* Sombra suave roxa */
+}
+
+/* --- BOTÃO CONTINUAR --- */
+button.btn {
+    width: 100%; /* Botão da mesma largura do input! Fica muito mais bonito */
+    padding: 18px; /* Mesma altura do input */
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #a855f7, var(--primary-color));
+    color: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 0; /* Remove margem extra se tiver */ 
+    /* ADICIONE ESTAS LINHAS: */
+    display: flex;            /* Transforma o botão em um container flex */
+    justify-content: center;  /* Centraliza tudo horizontalmente */
+    align-items: center;      /* Centraliza tudo verticalmente */
+    gap: 10px;                /* O pulo do gato: espaço entre o texto e o ícone */
+}
+
+button.btn:hover {
+    transform: translateY(-2px); /* Sobe um pouquinho */
+    box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3); /* Sombra roxa */
+} 
+
+/* Opcional: Ajuste fino no tamanho do ícone se achar necessário */
+button.btn i {
+    font-size: 0.9em; /* Fica ligeiramente menor que o texto, mais elegante */
+} 
+
+/* =========================================
+   RESPONSIVIDADE (VERSÃO CELULAR)
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* 1. Muda o layout para coluna (um embaixo do outro) */
+    .hero {
+        flex-direction: column;
+        height: auto; /* Remove a altura fixa para caber o conteúdo */
+    }
+
+    /* 2. Ajusta o Lado Esquerdo (Agora vira o Topo) */
+    .lado-esquerdo {
+        width: 100%; /* Ocupa a largura toda */
+        height: auto;
+        padding: 30px 20px 10px 20px; /* Ajuste no espaçamento */
+        background-color: white; /* Fica branco igual ao formulário para parecer uma coisa só */
+    }
+
+    /* 3. ESCONDE A IMAGEM (O pulo do gato) */
+    .lado-esquerdo img {
+        display: none;
+    }
+
+    /* 4. Ajusta o texto para mobile */
+    .lado-esquerdo h1 {
+        font-size: 2rem; /* Um pouco menor que no desktop */
+        margin-bottom: 5px;
+    }
+
+    .lado-esquerdo p {
+        font-size: 1rem;
+        margin-bottom: 10px; /* Menos espaço embaixo */
+    }
+
+    /* 5. Ajusta o Lado Direito (O Formulário) */
+    .lado-direito {
+        width: 100%; /* Largura total */
+        padding: 0 20px 40px 20px; /* Espaço nas laterais e embaixo */
+    }
+
+    /* Garante que o formulário não fique colado nas bordas */
+    #formulario {
+        width: 100%;
+        padding: 0;
+    } 
+
+    label {
+    font-size: 1rem; /* Aumenta a letra */ 
+    margin-bottom: 15px; 
+    margin-top: 70px;
+} 
+
+input[type="text"],
+input[type="email"] {
+     font-size: 16px; /* Tamanho bom para ler */
+    
+} 
+
+
+}

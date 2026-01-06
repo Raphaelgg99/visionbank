@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # ==============================
+  # 1. BANCO DE DADOS (MySQL)
+  # ==============================
+  db:
+    image: mysql:8.0
+    container_name: visionbank-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root        # <--- Usei 'root' pra facilitar (igual aos seus testes anteriores)
+      MYSQL_DATABASE: banco_digital    # <--- Nome CORRETO (igual ao seu Java)
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    # HEALTHCHECK (Para o Java esperar o banco acordar)
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # ==============================
+  # 2. BACK-END
+  # ==============================
+  backend:
+    build: ./back
+    container_name: visionbank-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy  # <--- ESSA LINHA É A CHAVE DO SUCESSO!
+    environment:
+      # Conecta no serviço 'db' com a senha 'root' e banco 'banco_digital'
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/banco_digital?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+  # ==============================
+  # 3. FRONT-END (HTML/Nginx)
+  # ==============================
+  frontend:
+    build: ./front # O Docker vai procurar o Dockerfile dentro da pasta 'frontend'
+    container_name: visionbank-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

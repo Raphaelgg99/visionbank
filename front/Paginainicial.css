@@ -1,0 +1,434 @@
+/* Reset básico */
+:root {
+    --primary-color: blueviolet;; /* Seu roxo */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+.menu-cabecalho {
+    display: flex;
+    /* O PULO DO GATO: space-between joga um item pra cada canto */
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, var(--primary-color) 0%, #6a0dad 100%);
+    height: 70px;
+    /* Padding lateral percentual ou fixo para não colar na borda */
+    padding: 0 40px;
+}
+
+.logo img {
+    height: 60px; /* Ajuste conforme necessário */
+    /* Removido o padding-right gigante! */
+}
+
+.menu-acoes {
+    display: flex;
+    gap: 20px; /* Espaço entre os botões "Entrar" e "Criar" */
+}
+
+/* Estilizando o Link para parecer um Botão */
+/* =========================================
+   ESTILOS DOS BOTÕES DO HEADER
+   ========================================= */
+
+/* Estilo Base (comum aos dois) */
+.menu-acoes a {
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 30px; /* Aumentei um pouco a largura */
+    border-radius: 50px; /* Mais arredondado (Pill shape) */
+    transition: all 0.3s ease; /* Transição suave para tudo */
+    font-family: 'Lato', sans-serif;
+    display: inline-block; /* Garante que padding funcione bem */
+}
+
+/* --- BOTÃO ENTRAR (Secundário) ---
+   Fica transparente, só com a borda. Mais elegante. */
+.botao-login {
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.6); /* Borda semi-transparente */
+    color: white;
+    font-weight: 500;
+}
+
+.botao-login:hover {
+    border-color: white;       /* Borda fica branca total */
+    background-color: rgba(255, 255, 255, 0.1); /* Fundo levemente branco */
+}
+
+/* --- BOTÃO CRIAR CONTA (Primário) ---
+   Fica sólido e chama atenção. */
+.botao-criar {
+    background-color: white;
+    border: 2px solid white; /* Borda invisível só p/ manter o tamanho igual ao outro */
+    color: blueviolet;       /* Texto roxo */
+    font-weight: 550;        /* Negrito para destacar */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.botao-criar:hover {
+    transform: translateY(-3px); /* O botão "sobe" levemente */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* A sombra aumenta */
+    background-color: #f0f0f0; /* Fica um pouquinho cinza */
+}
+
+/* 1. O Título Principal */
+.hero .texto h1 {
+    font-size: 3.5rem; /* Bem grande (aprox 56px) */
+    font-weight: 800;  /* Extra negrito */
+    line-height: 1.1;  /* Linhas mais próximas (fica mais compacto) */
+    color: #1a1a1a;    /* Preto suave (não use preto puro #000) */
+    margin-bottom: 20px;
+    letter-spacing: -1px; /* Letras levemente mais juntas (toque moderno) */
+}
+
+/* 2. O Efeito Mágico no "Vision Bank" */
+.destaque-vision {
+    /* O texto herda o degradê do botão! */
+    background: linear-gradient(135deg, #a855f7, var(--primary-color));
+    -webkit-background-clip: text; /* Recorta o fundo no formato das letras */
+    -webkit-text-fill-color: transparent; /* Deixa a letra transparente p/ ver o fundo */
+    display: inline-block; /* Garante que o recorte funcione bem */
+}
+
+.hero{
+    display: flex;
+    background-color: #f5f7fa;;
+    color: rgb(15, 15, 15);
+    height: 670px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 80px; /* 0 em cima/baixo, 80px nas laterais */
+}
+
+/* 3. O Parágrafo Descritivo */
+.hero .texto p {
+    font-size: 1.25rem; /* Aumentamos para 20px (leitura confortável) */
+    line-height: 1.6;   /* Mais "respiro" entre as linhas */
+    color: #555555;     /* Cinza médio (diminui o contraste cansativo) */
+    font-weight: 400;
+    max-width: 90%;     /* Evita que a linha fique comprida demais */
+    margin-bottom: 40px; /* Espaço generoso até o botão */
+}
+
+.hero .texto a {
+    display: inline-block; /* Garante que o padding e transform funcionem */
+    text-decoration: none;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-weight: 800; /* Bem negrito para chamar atenção */
+    font-size: 18px;  /* Um pouco maior que os textos normais */
+    letter-spacing: 0.5px; /* Um leve espaçamento entre letras dá sofisticação */
+
+    /* O PULO DO GATO: Gradiante em vez de cor sólida */
+    /* Vai de um roxo mais claro (quase rosa) para o roxo forte */
+    background: linear-gradient(135deg, #a855f7, var(--primary-color));
+
+    /* Formato "Pílula" (bem arredondado) */
+    padding: 15px 45px; /* Mais "gordinho" e largo */
+    border-radius: 50px;
+
+    /* Sombra colorida e difusa para dar "luz" */
+    box-shadow: 0 10px 20px -10px rgba(138, 43, 226, 0.5);
+
+    /* Transição suave para todas as propriedades */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* EFEITO AO PASSAR O MOUSE (HOVER) */
+.hero .texto a:hover {
+    /* O botão "flutua" para cima */
+    transform: translateY(-5px) scale(1.02);
+
+    /* A sombra fica maior e mais intensa, aumentando a sensação de altura */
+    box-shadow: 0 20px 30px -10px rgba(138, 43, 226, 0.7);
+
+    /* Aumenta um pouco o brilho do gradiante */
+    filter: brightness(1.1);
+}
+
+/* EFEITO AO CLICAR (ACTIVE) - Opcional, mas dá um toque tátil */
+.hero .texto a:active {
+    transform: translateY(-2px) scale(0.98); /* O botão afunda um pouquinho */
+    box-shadow: 0 5px 10px -5px rgba(138, 43, 226, 0.4);
+}
+
+.imagem {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.texto {
+  flex: 1;
+  max-width: 50%;
+  padding-bottom: 40px;
+  padding-left: 80px
+}
+
+.imagem img {
+  max-width: 100%;
+  height: 390px;
+  border-radius: 15px;
+  object-fit: cover; /* <--- ADICIONE ISSO. A imagem funciona como um "background", ela corta as bordas mas não deforma a pessoa. */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.como-funciona{
+   /* display: flex;  <-- Não precisa de flex aqui se for só pra centralizar um bloco de texto */
+    background: linear-gradient(180deg, var(--primary-color) 0%, #6a0dad 100%);
+    color: white;
+    /* height: 600px; <-- REMOVIDO */
+    padding: 80px 20px; /* Usamos padding para dar altura e respiro nas laterais */
+    text-align: center; /* Centraliza todo o texto dentro da seção */
+}
+
+.como-funciona h2 {
+    /* margin-left: 150px; <-- REMOVIDO */
+    font-size: 3rem; /* Usando REM (aprox 48px) */
+    margin-bottom: 60px;
+    /* O texto já está centralizado pelo text-align: center do pai */
+}
+
+.step-container {
+    display: flex;
+    justify-content: center; /* Centraliza os cards horizontalmente */
+    gap: 40px; /* Espaço entre os cards */
+    flex-wrap: wrap; /* IMPORTANTE: Permite que os cards quebrem de linha em telas pequenas */
+    max-width: 1200px; /* Limita a largura total para não esticar demais em telas gigantes */
+    margin: 0 auto; /* Centraliza o container na tela */
+}
+
+.step {
+    /* width: 100%; <-- Isso estava errado se a ideia era ter 3 colunas */
+    flex: 1; /* Tenta ocupar espaço igual */
+    min-width: 250px; /* Mas não fica menor que 250px */
+    max-width: 350px; /* E não fica maior que 350px */
+    /* text-align: left; <-- Se quiser o texto dos passos alinhado à esquerda */
+}
+.step h3{
+    font-size: 25px;
+}
+
+.step p{
+    font-size: 20px;
+}
+
+.step i{
+    font-size: 3.5rem;
+}
+
+.rodape {
+    background-color: #1a1a1a; /* Um cinza quase preto, super elegante */
+    color: white;
+    padding: 30px 20px;
+    text-align: center; /* Centraliza tudo */
+    margin-top: auto; /* Garante que fique no fundo */
+}
+
+.social-links {
+    margin-bottom: 15px;
+}
+
+.social-links a {
+    color: white; /* Texto branco */
+    text-decoration: none; /* Sem sublinhado */
+    font-size: 1.1rem;
+    margin: 0 15px; /* Espaço entre os links */
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: var(--primary-color); /* Fica roxo quando passa o mouse! */
+}
+
+.copyright {
+    font-size: 0.9rem;
+    color: #ccc; /* Um cinza mais claro para dar menos destaque que os links */
+    margin: 0;
+}
+
+/* =========================================
+   ESTILO DO MODAL DE LOGIN
+   ========================================= */
+
+/* O Fundo Escuro (Overlay) */
+.modal-container {
+    display: none; /* Começa escondido! */
+    position: fixed; /* Fica fixo na tela */
+    z-index: 1000; /* Fica em cima de TUDO */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Preto transparente */
+    justify-content: center; /* Centraliza a caixa */
+    align-items: center;
+    backdrop-filter: blur(5px); /* Efeito de vidro embaçado no fundo (chique!) */
+}
+
+/* A Caixinha Branca */
+.modal-box {
+    background-color: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px; /* Tamanho máximo */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: descerSuave 0.3s ease; /* Animação de entrada */
+}
+
+/* Títulos */
+.modal-box h2 {
+    color: #333;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.modal-box p {
+    color: #666;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+/* Botão de Fechar (X) */
+.fechar-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.fechar-modal:hover {
+    color: var(--primary-color);
+}
+
+/* Inputs do Modal (Reutilizando seu estilo moderno) */
+.modal-box input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    font-size: 16px;
+    box-sizing: border-box; /* Garante que o padding não estoure */
+}
+
+.modal-box input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.modal-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+}
+
+/* Botão de Ação */
+.btn-entrar-modal {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #a855f7, var(--primary-color));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.btn-entrar-modal:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+}
+
+/* Animaçãozinha para a caixa aparecer descendo */
+@keyframes descerSuave {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* =========================================
+   MEDIA QUERIES (Versão Mobile)
+   ========================================= */
+
+@media (max-width: 910px) {
+
+    /* 1. Ajuste do Cabeçalho */
+    .menu-cabecalho {
+        padding: 0 20px; /* Reduz o espaço lateral */
+        height: auto;    /* Altura flexível */
+        flex-wrap: wrap; /* Se faltar espaço, quebra a linha */
+        gap: 15px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    /* 2. Hero Section (A grande mudança) */
+    .hero {
+        flex-direction: column; /* Empilha: Texto em cima, Imagem embaixo */
+        height: auto; /* Remove altura fixa */
+        padding: 40px 20px; /* Mais espaço interno */
+        text-align: center; /* Centraliza tudo */
+    }
+
+    /* 3. Ajuste do container de Texto da Hero */
+    .hero .texto {
+        max-width: 100%; /* Ocupa a largura total */
+        padding-left: 0; /* Remove aquele recuo de 80px */
+        margin-bottom: 40px; /* Espaço para a imagem não colar no texto */
+
+        /* Centraliza o botão e textos flexíveis */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Ajuste fino nas fontes para não ficarem gigantes no celular */
+    .hero .texto h1 {
+        font-size: 53px; /* Reduz de 45px para 32px */
+        margin-left: 0;  /* Garante que não tenha margem lateral */
+    }
+
+    .hero .texto p {
+        font-size: 22px;
+        margin-left: 0;
+    }
+
+    /* Botão "Simular Agora" ocupando mais espaço para facilitar o toque */
+    .hero .texto a {
+        margin-left: 0;
+        width: 100%;
+        max-width: 300px; /* Trava para não ficar largo demais */
+        display: block;
+        font-size: 18px;
+    }
+
+    /* 4. Ajuste da Imagem */
+    .imagem img {
+        display: none;
+    }
+
+    /* 5. Ajuste da Seção "Como Funciona" */
+    .como-funciona {
+        padding: 40px 20px;
+    }
+
+    .como-funciona h2 {
+        font-size: 2.5rem; /* Título um pouco menor */
+    }
+}

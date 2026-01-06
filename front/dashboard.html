@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Bank - Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<header>
+    <nav class="cabecalho">
+        <div class="logo-vision">
+            <a href="#">
+                <img src="logobanco/logo.png" alt="Logo Vision Bank">
+            </a>
+        </div>
+        <a href="#" id="sair">
+            <i class="fas fa-sign-out-alt"></i> <span>Sair</span>
+        </a>
+    </nav>
+</header>
+
+<div id="saldo">
+    <span id="saldacao">Olá, Usuário</span>
+    <div>
+        <span>Meu Saldo</span>
+        <span id="valor-saldo">...</span>
+    </div>
+</div>
+
+<nav class="transacoes">
+    <a id="saque" class="botao-saque" href="#">Sacar</a>
+    <a id="deposito" href="#">Depositar</a>
+    <a id="transferencia" href="#">Transferência</a>
+    <a id="histórico" href="#">Extrato</a>
+</nav>
+
+<section id="historico">
+    <h3>Últimas Transações</h3>
+
+    <div id="mensagem-vazio" style="display: none;">
+        <p>📅 Você ainda não possui transações recentes.</p>
+    </div>
+
+    <div class="tabela-container">
+        <table>
+            <thead> <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th class="text-right">Valor</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+
+        </table>
+        <div class="ver-tudo-container">
+            <a href="#" id="link-ver-tudo">VER TUDO</a>
+        </div>
+    </div>
+</section>
+
+<div id="modal-saque" class="modal-container">
+    <div class="modal-content">
+        <span class="fechar-modal" id="fechar-saque">&times;</span>
+
+        <h2>Realizar Saque</h2>
+        <p>Informe o valor que deseja retirar</p>
+
+        <div class="input-grupo-modal">
+            <label for="valorSaqueInput">Valor (R$)</label>
+            <input type="number" id="valorSaqueInput" placeholder="Ex: 50.00" step="0.01">
+        </div>
+
+        <button id="btn-confirmar-saque" class="btn-acao-modal">Confirmar Saque</button>
+    </div>
+</div>
+
+<div id="modal-deposito" class="modal-container">
+    <div class="modal-content">
+        <span class="fechar-modal" id="fechar-deposito">&times;</span>
+
+        <h2>Realizar Depósito</h2>
+        <p>Informe o valor que deseja retirar</p>
+
+        <div class="input-grupo-modal">
+            <label for="valorDepositoInput">Valor (R$)</label>
+            <input type="number" id="valorDepositoInput" placeholder="Ex: 50.00" step="0.01">
+        </div>
+
+        <button id="btn-confirmar-deposito" class="btn-acao-modal">Confirmar Depósito</button>
+    </div>
+</div>
+
+<div id="modal-transferencia" class="modal-container">
+    <div class="modal-content">
+        <span class="fechar-modal" id="fechar-transferencia">&times;</span>
+
+        <h2>Realizar Transferencia</h2>
+        <p>Informe o numero da conta que voce deseja transferir</p>
+        <div class="input-grupo-modal">
+            <label for="numeroContaInput">Insira o numero da conta de destino:</label>
+            <input type="text" id="numeroContaInput">
+        </div>
+        <p>Informe o valor que você deseja transferir</p>
+        <div class="input-grupo-modal">
+            <label for="valorTransferenciaInput">Valor (R$)</label>
+            <input type="number" id="valorTransferenciaInput" placeholder="Ex: 50.00" step="0.01">
+        </div>
+        <button id="btn-confirmar-transferencia" class="btn-acao-modal">Confirmar Transferência</button>
+    </div>
+</div>
+
+<div id="modal-extrato" class="modal-container">
+    <div class="modal-content modal-extrato-content">
+        <span class="fechar-modal" id="fechar-extrato">&times;</span>
+
+        <h2>Extrato Detalhado</h2>
+        <p>Histórico completo de transações</p>
+
+        <div>
+            <table class="tabela-extrato-detalhado">
+                <thead>
+                <tr>
+                    <th style="padding: 10px;">Data/Hora</th>
+                    <th style="padding: 10px;">Tipo</th>
+                    <th style="padding: 10px;">Remetente</th>
+                    <th style="padding: 10px;">Destinatário</th>
+                    <th style="padding: 10px; text-align: right;">Valor</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-extrato-detalhado">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
