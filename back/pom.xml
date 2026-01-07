@@ -113,11 +113,11 @@
             <scope>test</scope>
         </dependency>
 
-		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 		<!-- Para configurar o Spring Boot com JPA e banco de dados -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
