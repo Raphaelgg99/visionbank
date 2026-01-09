@@ -44,7 +44,8 @@ body {
 #saldo{
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza verticalmente se sobrar espaço */
+    justify-content: center; /* Centraliza verticalmente se sobrar espaço */ 
+    position: relative; /* Adicione isso na regra principal do #saldo */
 
     /* IMPORTANTE: Padding interno cria o espaço da borda para o texto */
     padding: 30px 40px;
@@ -88,6 +89,24 @@ body {
 #saldo div span:nth-child(2) { /* O Valor "0,00" */
     font-size: 40px; /* Tamanho grande destaque */
     font-weight: 700;
+} 
+
+/* 2. Jogamos o número da conta lá pro canto */
+#nconta {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    
+    font-size: 13px;
+    background-color: rgba(255, 255, 255, 0.2); /* Um fundinho transparente chique */
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+#nconta::before {
+    content: "C/C • "; /* Fica parecendo app de banco real */
 }
 
 .transacoes {

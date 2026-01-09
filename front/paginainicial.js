@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
             };
 
             // 3. Envia para o Back-End
-            fetch('http://localhost:8080/login', {
+            fetch('https://visionbank-back.onrender.com/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

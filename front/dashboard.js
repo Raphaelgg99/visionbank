@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function carregarDadosDoDashboard(numeroDaConta, token) {
     const tokenFormatado = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
 
-    fetch(`http://localhost:8080/conta/${numeroDaConta}`, {
+    fetch(`https://visionbank-back.onrender.com/conta/${numeroDaConta}`, {
         method: 'GET',
         headers: {
             'Authorization': tokenFormatado,
@@ -45,6 +45,12 @@ function carregarDadosDoDashboard(numeroDaConta, token) {
         if (elementoNome) {
             const primeiroNome = dados.nome.split(' ')[0];
             elementoNome.innerText = `Olá, ${primeiroNome}`;
+        } 
+
+        const nconta = document.getElementById("nconta"); 
+        if(nconta){
+            const numeroDaConta = localStorage.getItem('usuarioId');
+            nconta.innerText = numeroDaConta;
         }
 
         // Atualiza Saldo
@@ -78,7 +84,7 @@ let todasTransacoesCache = [];
 function buscarExtrato(numeroDaConta, token) {
     const tokenFormatado = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
 
-    fetch(`http://localhost:8080/conta/${numeroDaConta}/extrato`, {
+    fetch(`https://visionbank-back.onrender.com/conta/${numeroDaConta}/extrato`, {
         method: 'GET',
         headers: {
             'Authorization': tokenFormatado
@@ -236,7 +242,7 @@ if (btnConfirmarSaque) {
         const token = localStorage.getItem('token');
         const tokenFormatado = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
 
-        fetch(`http://localhost:8080/conta/${numeroDaConta}/sacar`, {
+        fetch(`https://visionbank-back.onrender.com/conta/${numeroDaConta}/sacar`, {
             method: 'PUT',
             headers: {
                 'Authorization': tokenFormatado,
@@ -379,7 +385,7 @@ if (btnConfirmarDeposito) {
         // REQUISIÇÃO PARA A API (DEPÓSITO)
         // =====================================
 
-        fetch(`http://localhost:8080/conta/${numeroDaConta}/depositar`, {
+        fetch(`https://visionbank-back.onrender.com/conta/${numeroDaConta}/depositar`, {
             method: 'PUT', // Método HTTP usado para atualização
 
             headers: {
@@ -593,7 +599,7 @@ if (btnConfirmarTransferencia) {
         // ========================
 
         // Envia a requisição para a API usando fetch
-        fetch(`http://localhost:8080/conta/${numeroContaRemetente}/transferencia`, {
+        fetch(`https://visionbank-back.onrender.com/conta/${numeroContaRemetente}/transferencia`, {
 
             // Define o método HTTP como PUT (atualização/operação)
             method: 'PUT',

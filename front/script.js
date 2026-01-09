@@ -121,15 +121,14 @@ document.getElementById("finalizarCadastro").addEventListener("click", function(
     // 1. Impede o recarregamento da página
     event.preventDefault();
 
-    // 2. Captura TODOS os dados do formulário novamente
-    // (Precisamos pegar nome, email e senha de novo porque as variáveis dos passos anteriores eram locais)
+    // 2. Captura os dados
     var nome = document.getElementById("nome").value;
     var email = document.getElementById("email").value;
     var senha = document.getElementById("senha").value;
     var saldoInput = document.getElementById("saldo").value;
     var saldo = parseFloat(saldoInput);
 
-    // --- VALIDAÇÕES DO SALDO (Mantendo as suas) ---
+    // --- VALIDAÇÕES (Se der erro aqui, o botão continua funcionando) ---
     if (saldoInput.trim() === "" || isNaN(saldo)) {
         alert("Por favor, digite um valor numérico válido.");
         return;
@@ -143,7 +142,18 @@ document.getElementById("finalizarCadastro").addEventListener("click", function(
         return;
     }
 
-    // 3. Monta o Objeto para CRIAR A CONTA
+    // ============================================================
+    // 🔒 TRAVA DE SEGURANÇA (NOVO CÓDIGO)
+    // ============================================================
+    var btnFinalizar = document.getElementById("finalizarCadastro");
+    var textoOriginal = btnFinalizar.innerHTML; // Salva o ícone e texto originais
+
+    btnFinalizar.disabled = true;              // Desativa o clique
+    btnFinalizar.innerText = "Processando..."; // Muda o texto para o usuário saber que foi
+    btnFinalizar.style.backgroundColor = "#ccc"; // (Opcional) Deixa cinza
+    btnFinalizar.style.cursor = "not-allowed";
+    // ============================================================
+
     var dadosUsuario = {
         nome: nome,
         email: email,
@@ -151,31 +161,30 @@ document.getElementById("finalizarCadastro").addEventListener("click", function(
         saldo: saldo
     };
 
-    // --- INÍCIO DO PROCESSO (Criação -> Login -> Dashboard) ---
-
     // PASSO A: Tenta Criar a Conta
-    fetch('http://localhost:8080/conta/adicionar', {
+    fetch('https://visionbank-back.onrender.com/conta/adicionar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosUsuario)
     })
     .then(response => {
         if (response.ok) {
-            return response.json(); // Conta criada com sucesso!
+            return response.json();
         } else {
+            // Se der erro (ex: email duplicado), lança erro para cair no catch
+            // e destravar o botão
             throw new Error('Erro ao criar conta (Verifique se o email já existe)');
         }
     })
     .then(contaCriada => {
-        // PASSO B: Conta criada! Agora vamos fazer o LOGIN AUTOMÁTICO
         console.log("Conta criada! Iniciando login automático...");
 
         var dadosLogin = {
-            email: email, // Usa o mesmo email do cadastro
-            senha: senha  // Usa a mesma senha do cadastro
+            email: email,
+            senha: senha
         };
 
-        return fetch('http://localhost:8080/login', {
+        return fetch('https://visionbank-back.onrender.com/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dadosLogin)
@@ -183,30 +192,33 @@ document.getElementById("finalizarCadastro").addEventListener("click", function(
     })
     .then(responseLogin => {
         if (responseLogin.ok) {
-            return responseLogin.json(); // Pega o Token
+            return responseLogin.json();
         } else {
             throw new Error('Conta criada, mas falha ao realizar login automático.');
         }
     })
     .then(dataLogin => {
-        // PASSO C: Login realizado! Salva os dados e redireciona
-
-        // 1. Salva o Token (Fundamental para o Dashboard)
         localStorage.setItem('token', dataLogin.token);
 
-        // 2. Salva o ID do usuário (Fundamental para carregar o saldo correto)
         if (dataLogin.id) {
             localStorage.setItem('usuarioId', dataLogin.id);
         }
-
-        // 3. Opcional: Salvar nome para a saudação ficar rápida
         localStorage.setItem('usuarioNome', nome);
 
         alert("Conta criada com sucesso! Entrando...");
-        window.location.href = "dashboard.html"; // Vai direto pro sistema!
+        window.location.href = "dashboard.html";
     })
     .catch(error => {
         console.error('Erro:', error);
         alert("Ocorreu um erro: " + error.message);
+
+        // ============================================================
+        // 🔓 DESTRAVA O BOTÃO EM CASO DE ERRO (NOVO CÓDIGO)
+        // ============================================================
+        // Se deu erro (ex: email repetido), reativa o botão para o usuário tentar corrigir
+        btnFinalizar.disabled = false;
+        btnFinalizar.innerHTML = textoOriginal; // Volta o texto "Finalizar >"
+        btnFinalizar.style.backgroundColor = ""; // Volta a cor original
+        btnFinalizar.style.cursor = "pointer";
     });
 });
