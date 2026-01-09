@@ -4,10 +4,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // Usando os IDs e Classes que vi nas suas imagens
     var modal = document.getElementById("modal-login");
     var btnEntrar = document.querySelector(".botao-login"); // Botão do menu lá em cima
-    var btnFechar = document.querySelector(".fechar-modal"); // O "X" da janela
+    var btnFechar = document.querySelector(".fechar-modal"); // O "X" da janela 
+    var btnSimular = document.querySelector(".botao-simular")
 
     // Pegamos o formulário que está dentro do modal para ouvir o envio dele
-    var formLogin = document.querySelector("#modal-login form");
+    var formLogin = document.querySelector(".modal-login form");
 
     // --- 2. ABRE E FECHA A JANELA ---
 
@@ -24,6 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
         btnFechar.addEventListener("click", function() {
             modal.style.display = "none";
         });
+    } 
+
+    if (btnSimular){
+        btnSimular.addEventListener("click", function(){ 
+            event.preventDefault(); // Evita que o link recarregue a página
+            modal.style.display = "flex";
+        })
     }
 
     // Se clicar fora da caixinha branca (no fundo escuro), também fecha

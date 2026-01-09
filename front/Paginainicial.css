@@ -354,6 +354,29 @@ body {
 .btn-entrar-modal:hover {
     transform: scale(1.02);
     box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+} 
+
+
+/* Espaçamento e alinhamento do texto */
+.link-criar-conta {
+    text-align: center;
+    margin-top: 15px;      /* Afasta um pouco do botão */
+    font-size: 14px;       /* Tamanho discreto */
+    color: #555;           /* Cinza suave para o texto */
+}
+
+/* Estilo do link clicável */
+.link-criar-conta a {
+    color: #6a0dad;        /* O roxo da identidade visual do Vision Bank */
+    text-decoration: none; /* Remove o sublinhado padrão */
+    font-weight: 600;      /* Deixa um pouco mais grosso para destacar */
+    transition: color 0.3s;
+}
+
+/* Efeito quando passa o mouse */
+.link-criar-conta a:hover {
+    color: #4b0082;        /* Um roxo mais escuro ao passar o mouse */
+    text-decoration: underline;
 }
 
 /* Animaçãozinha para a caixa aparecer descendo */
