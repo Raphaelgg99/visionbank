@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/conta/adicionar").permitAll()  // Allow POST for this route
                         .requestMatchers("/conta/listartodas").hasRole("ADMIN")
                         .requestMatchers("/conta/{numeroDaConta}/atualizar").hasAnyRole("ADMIN", "USER")
