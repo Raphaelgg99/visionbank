@@ -11,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/pix")
+@CrossOrigin(origins = "*")
 public class PixController {
 
     @Autowired
