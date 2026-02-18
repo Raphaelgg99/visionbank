@@ -101,9 +101,6 @@ public class TransacaoService {
         transacaoDTO.setData(transacao.getData());
         return transacaoDTO;
     }
-
-
-
 }
 
 
