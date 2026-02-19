@@ -12,9 +12,7 @@ public class JWTCreator {
     public static final String ROLES_AUTHORITIES = "authorities";
 
     public static String create(String prefix, String key, JWTObject jwtObject) {
-        // Certifique-se de que as roles sejam formatadas corretamente
         List<String> rolesAsString = checkRoles(jwtObject.getRoles());
-        // Gera o token com as claims corretas
         String token = Jwts.builder()
                 .setSubject(jwtObject.getSubject())
                 .setIssuedAt(jwtObject.getIssuedAt())

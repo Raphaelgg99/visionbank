@@ -33,7 +33,6 @@ public class LoginService {
             }
 
             System.out.println("Roles associadas ao usuário: " + conta.getRoles());
-            //Estamos enviando um objeto Sessão para retornar mais informações do usuário
             Sessao sessao = new Sessao();
             sessao.setLogin(conta.getEmail());
             sessao.setId(conta.getNumeroDaConta());
