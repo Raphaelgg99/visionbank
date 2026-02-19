@@ -9,6 +9,8 @@ import com.simuladorbanco.BancoDigital.repository.ContaRepository;
 import com.simuladorbanco.BancoDigital.repository.TransacaoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +56,10 @@ public class ContaService {
     public Conta atualizarConta(Long numeroDaConta, Conta contaAtualizada){
         Conta conta = contaRepository.findById(numeroDaConta).
                 orElseThrow(() -> new RuntimeException("Conta não encontrado"));
+        String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!conta.getEmail().equals(usuarioLogado)) {
+            throw new AccessDeniedException("Operação negada: Você não tem permissão para atualizar esta conta.");
+        }
         conta.setNome(contaAtualizada.getNome());
         String senhaCriptografada = encoder.encode(contaAtualizada.getSenha());
         if(contaRepository.existsByEmail(contaAtualizada.getEmail()) &&
@@ -68,6 +74,10 @@ public class ContaService {
     public TransacaoDTO depositar(Double valor, Long numeroDaConta) {
         Conta conta = contaRepository.findById(numeroDaConta)
                 .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
+        String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!conta.getEmail().equals(usuarioLogado)) {
+            throw new AccessDeniedException("Operação negada: Você não tem permissão para depositar nessa conta.");
+        }
         if (valor == null || valor <= 0) {
             throw new IllegalArgumentException("O valor do depósito deve ser maior que zero.");
         }
@@ -82,6 +92,10 @@ public class ContaService {
     public TransacaoDTO sacar(Double valor, Long numeroDaConta){
         Conta conta = contaRepository.findById(numeroDaConta)
                 .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
+        String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!conta.getEmail().equals(usuarioLogado)) {
+            throw new AccessDeniedException("Operação negada: Você não tem permissão para sacar nessa conta.");
+        }
         if(conta.getSaldo()<valor){
             throw new SaldoInsuficienteException();
         }
@@ -101,6 +115,10 @@ public class ContaService {
                 .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
         Conta contaDestinario = contaRepository.findById(transferencia.getNumeroContaDestinatario())
                 .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
+        String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!contaRemetente.getEmail().equals(usuarioLogado)) {
+            throw new AccessDeniedException("Operação negada: Você não tem permissão para realizar transações nessa conta.");
+        }
         if(contaRemetente.getSaldo()<transferencia.getValor()){
             throw new SaldoInsuficienteException();
         }
@@ -116,9 +134,15 @@ public class ContaService {
         return transacaoDTO;
     }
 
-    public void removerConta(@PathVariable Long numeroDaConta){
+    public void removerConta(Long numeroDaConta){
         Conta conta = contaRepository.findById(numeroDaConta).
                 orElseThrow(() -> new RuntimeException("Conta não encontrado"));
+        String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // 2. Se o e-mail da conta alvo for diferente do e-mail do Token, barra na hora!
+        if (!conta.getEmail().equals(usuarioLogado)) {
+            throw new AccessDeniedException("Operação negada: Você não tem permissão para deletar esta conta.");
+        }
         List<Transacao> transacoesRemetente = transacaoRepository.findByContaRemetente(conta);
         Conta contaDefault = contaRepository.findById(99L).
                 orElseThrow(() -> new RuntimeException("Conta não encontrado"));;
@@ -136,9 +160,14 @@ public class ContaService {
     }
 
 
-    public Conta buscarConta(@PathVariable Long id) {
-        return contaRepository.findById(id).
+    public Conta buscarConta( Long id) {
+        Conta conta = contaRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("Conta não encontrado"));
+        String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!conta.getEmail().equals(usuarioLogado)) {
+            throw new AccessDeniedException("Operação negada: Você não tem permissão para buscar esta conta.");
+        }
+        return conta;
     }
 }
 

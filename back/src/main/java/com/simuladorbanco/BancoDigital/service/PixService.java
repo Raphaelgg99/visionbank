@@ -8,6 +8,8 @@ import com.simuladorbanco.BancoDigital.model.Conta;
 import com.simuladorbanco.BancoDigital.model.Transacao;
 import com.simuladorbanco.BancoDigital.repository.ContaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -34,6 +36,10 @@ public class PixService {
         try {
             Conta contaDestinatario = contaRepository.findById(numeroContaDestinatario)
                     .orElseThrow(() -> new RuntimeException("Conta destino não encontrada"));
+            String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (!contaDestinatario.getEmail().equals(usuarioLogado)) {
+                throw new AccessDeniedException("Operação negada: Você não tem permissão de gerar QrCode nessa conta.");
+            }
             LocalDateTime dataExpiracao = LocalDateTime.now().plusMinutes(30);
 
             Map<String, Object> payloadMap = new HashMap<>();
@@ -59,13 +65,17 @@ public class PixService {
 
     public TransacaoDTO pagarQrCodePix(Long numeroContaRemetente, String conteudoQrCode) {
         try {
+            Conta contaRemetente = contaRepository.findById(numeroContaRemetente).
+                    orElseThrow(() -> new RuntimeException("Conta não encontrado"));
+            String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (!contaRemetente.getEmail().equals(usuarioLogado)) {
+                throw new AccessDeniedException("Operação negada: Você não tem permissão de realizar transaçoes nessa conta.");
+            }
             JsonNode jsonNode = objectMapper.readTree(conteudoQrCode);
             Long numeroContaDestinatario = jsonNode.get("numeroContaDestinatario").asLong();
             double valorPix = jsonNode.get("valor").asDouble();
             String expiracaoStr = jsonNode.get("expiracao").asText();
             LocalDateTime dataExpiracao = LocalDateTime.parse(expiracaoStr);
-
-            // A MÁGICA DE SEGURANÇA: Verifica se o momento atual é DEPOIS da data de expiração
             if (LocalDateTime.now().isAfter(dataExpiracao)) {
                 throw new RuntimeException("Este QR Code do PIX já expirou!");
             }
