@@ -956,7 +956,8 @@ const inputCopiaCola = document.getElementById('input-copia-cola');
 const spanConfirmaConta = document.getElementById('confirma-conta-pix');
 const spanConfirmaValor = document.getElementById('confirma-valor-pix');
 const btnCancelarPix = document.getElementById('btn-cancelar-pix');
-const btnEfetivarPix = document.getElementById('btn-efetivar-pix');
+const btnEfetivarPix = document.getElementById('btn-efetivar-pix'); 
+const spanConfirmaNome = document.getElementById('confirma-nome-pix');
 
 let leitorScannerHtml5; 
 let payloadPixProntoParaPagar = ""; // Vai guardar o código até o usuário clicar em "Pagar Agora"
@@ -1005,7 +1006,9 @@ btnAvancarCopiaCola.addEventListener('click', () => {
 function processarCodigoPix(codigoTexto) {
     try {
         // Tenta ler o JSON do código PIX
-        const dadosPix = JSON.parse(codigoTexto);
+        const dadosPix = JSON.parse(codigoTexto); 
+
+        spanConfirmaNome.innerText = dadosPix.nomeDestinatario || "Usuário Não Identificado";
         
         // Preenche a tela de confirmação
         // Tenta ler "numeroContaDestinatario" (seu padrão novo) ou "contaDestino" (caso seja código antigo)

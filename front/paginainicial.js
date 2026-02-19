@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var btnSimular = document.querySelector(".botao-simular")
 
     // Pegamos o formulário que está dentro do modal para ouvir o envio dele
-    var formLogin = document.querySelector(".modal-login form");
+    var formLogin = document.querySelector("#form-login");
 
     // --- 2. ABRE E FECHA A JANELA ---
 
