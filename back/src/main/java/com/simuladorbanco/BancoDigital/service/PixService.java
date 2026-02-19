@@ -32,11 +32,14 @@ public class PixService {
 
     public Map<String, String> gerarQrCodePix(Long numeroContaDestinatario, BigDecimal valor) {
         try {
+            Conta contaDestinatario = contaRepository.findById(numeroContaDestinatario)
+                    .orElseThrow(() -> new RuntimeException("Conta destino não encontrada"));
             // Define que o QR Code vale por 30 minutos a partir de agora
             LocalDateTime dataExpiracao = LocalDateTime.now().plusMinutes(30);
 
             // Montamos um Map e usamos o Jackson para criar um JSON perfeito e limpo
             Map<String, Object> payloadMap = new HashMap<>();
+            payloadMap.put("nomeDestinatario", contaDestinatario.getNome());
             payloadMap.put("numeroContaDestinatario", numeroContaDestinatario);
             payloadMap.put("valor", valor);
             payloadMap.put("expiracao", dataExpiracao.toString()); // Guarda a hora limite

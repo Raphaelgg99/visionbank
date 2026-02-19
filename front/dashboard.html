@@ -117,23 +117,42 @@
             </div>
             
             <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button id="btn-confirmar-transferencia" class="btn-acao-modal" style="flex: 1; padding: 15px 5px; font-size: 14px;">
-                    Confirmar
-                </button>
+                <button id="btn-confirmar-transferencia" class="btn-acao-modal" style="flex: 1; padding: 15px 5px; font-size: 14px;">Confirmar</button>
                 <button id="btn-abrir-camera-pix" class="btn-acao-modal" style="flex: 1; background-color: #2ecc71; padding: 15px 5px; font-size: 14px;">
                     <i class="fas fa-qrcode"></i> Ler QR Code
                 </button>
+            </div>
+
+            <div style="margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px;">
+                <p style="font-size: 14px; margin-bottom: 10px; font-weight: bold; color: #555;">Ou use o Pix Copia e Cola:</p>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="input-copia-cola" placeholder="Cole o código do PIX aqui..." style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;">
+                    <button id="btn-avancar-copia-cola" class="btn-acao-modal" style="width: auto; padding: 0 20px; font-size: 14px;">Avançar</button>
+                </div>
             </div>
         </div>
 
         <div id="area-leitor-qr" style="display: none; text-align: center;">
             <p style="margin-bottom: 15px; font-weight: bold;">Aponte a câmera para o QR Code</p>
-            
             <div id="leitor-camera" style="width: 100%; max-width: 300px; margin: 0 auto; border-radius: 8px; overflow: hidden; border: 2px solid #ccc;"></div>
-            
             <button id="btn-cancelar-camera" class="btn-acao-modal" style="background-color: #e74c3c; margin-top: 20px;">
-                <i class="fas fa-times"></i> Cancelar
+                <i class="fas fa-times"></i> Cancelar Câmera
             </button>
+        </div>
+
+        <div id="area-confirmacao-pix" style="display: none; text-align: center;">
+            <i class="fas fa-check-circle" style="font-size: 45px; color: #2ecc71; margin-bottom: 15px;"></i>
+            <h3 style="margin-bottom: 20px;">Confirmar Pagamento</h3>
+            
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
+                <p style="margin-bottom: 10px; font-size: 16px;"><strong>Conta Destino:</strong> <span id="confirma-conta-pix">...</span></p>
+                <p style="margin-bottom: 0; font-size: 20px;"><strong>Valor:</strong> <span id="confirma-valor-pix" style="color: #6a0dad; font-weight: bold;">R$ 0,00</span></p>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button id="btn-cancelar-pix" class="btn-acao-modal" style="flex: 1; background-color: #95a5a6;">Voltar</button>
+                <button id="btn-efetivar-pix" class="btn-acao-modal" style="flex: 1; background-color: #2ecc71;">Pagar Agora</button>
+            </div>
         </div>
 
     </div>

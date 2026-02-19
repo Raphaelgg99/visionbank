@@ -944,58 +944,115 @@ btnCopiarPix.addEventListener('click', async () => {
 // LÓGICA DO LEITOR DE QR CODE (PAGAR PIX)
 // ==========================================
 
-const btnAbrirCameraPix = document.getElementById('btn-abrir-camera-pix');
-const btnCancelarCamera = document.getElementById('btn-cancelar-camera');
 const areaTransferenciaManual = document.getElementById('area-transferencia-manual');
 const areaLeitorQr = document.getElementById('area-leitor-qr');
+const areaConfirmacaoPix = document.getElementById('area-confirmacao-pix');
 
-let leitorScannerHtml5; // Variável global para guardar a câmera
+const btnAbrirCameraPix = document.getElementById('btn-abrir-camera-pix');
+const btnCancelarCamera = document.getElementById('btn-cancelar-camera');
+const btnAvancarCopiaCola = document.getElementById('btn-avancar-copia-cola');
+const inputCopiaCola = document.getElementById('input-copia-cola');
 
-// 1. Botão que abre a câmera
+const spanConfirmaConta = document.getElementById('confirma-conta-pix');
+const spanConfirmaValor = document.getElementById('confirma-valor-pix');
+const btnCancelarPix = document.getElementById('btn-cancelar-pix');
+const btnEfetivarPix = document.getElementById('btn-efetivar-pix');
+
+let leitorScannerHtml5; 
+let payloadPixProntoParaPagar = ""; // Vai guardar o código até o usuário clicar em "Pagar Agora"
+
+// ------------------------------------------
+// 1. CÂMERA
+// ------------------------------------------
 btnAbrirCameraPix.addEventListener('click', () => {
-    // Esconde os inputs manuais e mostra a div da câmera
     areaTransferenciaManual.style.display = 'none';
     areaLeitorQr.style.display = 'block';
 
-    // Inicia a biblioteca do QR Code
-    leitorScannerHtml5 = new Html5QrcodeScanner(
-        "leitor-camera",
-        { fps: 10, qrbox: { width: 200, height: 200 } },
-        false
-    );
-    
-    // Liga a câmera (pede permissão ao navegador se for a 1ª vez)
-    leitorScannerHtml5.render(sucessoAoLerQrCode, erroAoLerQrCode);
+    leitorScannerHtml5 = new Html5QrcodeScanner("leitor-camera", { fps: 10, qrbox: { width: 200, height: 200 } }, false);
+    leitorScannerHtml5.render(sucessoAoLerQrCode, () => {});
 });
 
-// 2. Botão de Cancelar a leitura
 btnCancelarCamera.addEventListener('click', () => {
     desligarCamera();
+    areaLeitorQr.style.display = 'none';
+    areaTransferenciaManual.style.display = 'block';
 });
 
 function desligarCamera() {
-    if (leitorScannerHtml5) {
-        leitorScannerHtml5.clear(); // Desliga a luzinha da webcam/celular
-    }
-    // Volta a tela para o modo manual
-    areaLeitorQr.style.display = 'none';
-    areaTransferenciaManual.style.display = 'block';
+    if (leitorScannerHtml5) leitorScannerHtml5.clear();
 }
 
-// 3. O QUE ACONTECE QUANDO A CÂMERA ACHA UM QR CODE:
 async function sucessoAoLerQrCode(textoLidoDoQrCode) {
-    // Para a câmera imediatamente
     desligarCamera();
-    
-    // Mostra um aviso pro usuário que está processando
-    alert("QR Code detectado! Processando o pagamento...");
+    processarCodigoPix(textoLidoDoQrCode); // Manda o código lido para a tela de confirmação
+}
 
-    const idContaLogada = localStorage.getItem('usuarioId');
+// ------------------------------------------
+// 2. PIX COPIA E COLA
+// ------------------------------------------
+btnAvancarCopiaCola.addEventListener('click', () => {
+    const codigoColado = inputCopiaCola.value.trim();
+    if (!codigoColado) {
+        alert("Por favor, cole um código PIX antes de avançar.");
+        return;
+    }
+    processarCodigoPix(codigoColado); // Manda o código colado para a tela de confirmação
+});
+
+// ------------------------------------------
+// 3. TELA DE CONFIRMAÇÃO 
+// ------------------------------------------
+function processarCodigoPix(codigoTexto) {
+    try {
+        // Tenta ler o JSON do código PIX
+        const dadosPix = JSON.parse(codigoTexto);
+        
+        // Preenche a tela de confirmação
+        // Tenta ler "numeroContaDestinatario" (seu padrão novo) ou "contaDestino" (caso seja código antigo)
+        spanConfirmaConta.innerText = dadosPix.numeroContaDestinatario || dadosPix.contaDestino || "N/A";
+        
+        // Formata o dinheiro bonitinho
+        const valorReal = parseFloat(dadosPix.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        spanConfirmaValor.innerText = `R$ ${valorReal}`;
+
+        // Salva o código original na variável global para usar depois
+        payloadPixProntoParaPagar = codigoTexto;
+
+        // Esconde tudo e mostra a confirmação
+        areaTransferenciaManual.style.display = 'none';
+        areaLeitorQr.style.display = 'none';
+        areaConfirmacaoPix.style.display = 'block';
+
+    } catch (e) {
+        alert("Código PIX inválido ou corrompido! Verifique se você copiou o texto inteiro.");
+        console.error("Erro ao fazer parse do JSON do PIX:", e);
+        
+        // Se a câmera leu errado, volta pra tela inicial
+        areaLeitorQr.style.display = 'none';
+        areaTransferenciaManual.style.display = 'block';
+    }
+}
+
+// Botão Voltar da Confirmação
+btnCancelarPix.addEventListener('click', () => {
+    payloadPixProntoParaPagar = ""; // Limpa a variável
+    inputCopiaCola.value = ""; // Limpa o input
+    areaConfirmacaoPix.style.display = 'none';
+    areaTransferenciaManual.style.display = 'block';
+});
+
+// ------------------------------------------
+// 4. O PAGAMENTO FINAL COM O BACKEND
+// ------------------------------------------
+btnEfetivarPix.addEventListener('click', async () => {
+    const idContaLogada = localStorage.getItem('usuarioId') || 1; // Adapte para o seu login!
     const token = localStorage.getItem('token');
     const tokenFormatado = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
 
+    btnEfetivarPix.innerText = "Processando...";
+    btnEfetivarPix.disabled = true;
+
     try {
-        // Dispara o texto lido lá para o backend pagar
         const response = await fetch(`https://visionbank-back.onrender.com/pix/pagar/${idContaLogada}`, {
             method: 'POST',
             headers: {
@@ -1003,27 +1060,29 @@ async function sucessoAoLerQrCode(textoLidoDoQrCode) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                qrCodeTexto: textoLidoDoQrCode // Manda exatamente o que a câmera leu
+                qrCodeTexto: payloadPixProntoParaPagar // Envia a variável global!
             })
         });
 
         const respostaBackend = await response.text();
 
         if (response.ok) {
-            alert(`✅ ${respostaBackend}`);
-            // Aqui você pode chamar sua função de recarregar o saldo da tela se quiser!
+            alert(`✅ Sucesso: ${respostaBackend}`);
             document.getElementById('modal-transferencia').style.display = 'none'; // Fecha o modal
+            
+            // UX Sênior: Limpa tudo para a próxima vez que abrir
+            inputCopiaCola.value = "";
+            areaConfirmacaoPix.style.display = 'none';
+            areaTransferenciaManual.style.display = 'block';
+            
         } else {
             alert(`❌ Falha no pagamento: ${respostaBackend}`);
         }
     } catch (error) {
         console.error("Erro no pagamento PIX:", error);
         alert("Erro ao tentar conectar com o banco.");
+    } finally {
+        btnEfetivarPix.innerText = "Pagar Agora";
+        btnEfetivarPix.disabled = false;
     }
-}
-
-// Função obrigatória para a biblioteca, não precisa preencher
-function erroAoLerQrCode(erro) {
-    // A câmera dispara erros invisíveis frame a frame até achar o código, 
-    // então deixamos vazio para não travar o console.
-}
+});
