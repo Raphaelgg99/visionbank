@@ -1,5 +1,6 @@
 package com.simuladorbanco.BancoDigital.controller;
 
+import com.simuladorbanco.BancoDigital.dtos.TransacaoDTO;
 import com.simuladorbanco.BancoDigital.model.Transacao;
 import com.simuladorbanco.BancoDigital.service.PixService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,9 @@ public class PixController {
             String conteudoQrCode = request.get("qrCodeTexto");
 
             // O Controller não sabe de nada, só repassa a bola pro Service!
-            Transacao transacao = pixService.pagarQrCodePix(numeroDaContaRemetente, conteudoQrCode);
+            TransacaoDTO dto = pixService.pagarQrCodePix(numeroDaContaRemetente, conteudoQrCode);
 
-            return ResponseEntity.ok("PIX de R$ " + transacao.getValor() + " pago com sucesso!");
+            return ResponseEntity.ok("PIX de R$ " + dto.getValor() + " pago com sucesso!");
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

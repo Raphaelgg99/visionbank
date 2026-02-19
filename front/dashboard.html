@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vision Bank - Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> 
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
 <header>
@@ -33,7 +34,8 @@
 <nav class="transacoes">
     <a id="saque" class="botao-saque" href="#">Sacar</a>
     <a id="deposito" href="#">Depositar</a>
-    <a id="transferencia" href="#">Transferência</a>
+    <a id="transferencia" href="#">Transferência</a> 
+    <a id="cobranca-pix" href="#">Fazer Cobrança</a>
     <a id="histórico" href="#">Extrato</a>
 </nav>
 
@@ -99,18 +101,41 @@
     <div class="modal-content">
         <span class="fechar-modal" id="fechar-transferencia">&times;</span>
 
-        <h2>Realizar Transferencia</h2>
-        <p>Informe o numero da conta que voce deseja transferir</p>
-        <div class="input-grupo-modal">
-            <label for="numeroContaInput">Insira o numero da conta de destino:</label>
-            <input type="text" id="numeroContaInput">
+        <h2>Realizar Transferência</h2>
+
+        <div id="area-transferencia-manual">
+            <p>Informe o numero da conta que voce deseja transferir</p>
+            <div class="input-grupo-modal">
+                <label for="numeroContaInput">Insira o numero da conta de destino:</label>
+                <input type="text" id="numeroContaInput">
+            </div>
+            
+            <p>Informe o valor que você deseja transferir</p>
+            <div class="input-grupo-modal">
+                <label for="valorTransferenciaInput">Valor (R$)</label>
+                <input type="number" id="valorTransferenciaInput" placeholder="Ex: 50.00" step="0.01">
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="btn-confirmar-transferencia" class="btn-acao-modal" style="flex: 1; padding: 15px 5px; font-size: 14px;">
+                    Confirmar
+                </button>
+                <button id="btn-abrir-camera-pix" class="btn-acao-modal" style="flex: 1; background-color: #2ecc71; padding: 15px 5px; font-size: 14px;">
+                    <i class="fas fa-qrcode"></i> Ler QR Code
+                </button>
+            </div>
         </div>
-        <p>Informe o valor que você deseja transferir</p>
-        <div class="input-grupo-modal">
-            <label for="valorTransferenciaInput">Valor (R$)</label>
-            <input type="number" id="valorTransferenciaInput" placeholder="Ex: 50.00" step="0.01">
+
+        <div id="area-leitor-qr" style="display: none; text-align: center;">
+            <p style="margin-bottom: 15px; font-weight: bold;">Aponte a câmera para o QR Code</p>
+            
+            <div id="leitor-camera" style="width: 100%; max-width: 300px; margin: 0 auto; border-radius: 8px; overflow: hidden; border: 2px solid #ccc;"></div>
+            
+            <button id="btn-cancelar-camera" class="btn-acao-modal" style="background-color: #e74c3c; margin-top: 20px;">
+                <i class="fas fa-times"></i> Cancelar
+            </button>
         </div>
-        <button id="btn-confirmar-transferencia" class="btn-acao-modal">Confirmar Transferência</button>
+
     </div>
 </div>
 
@@ -135,6 +160,32 @@
                 <tbody id="tbody-extrato-detalhado">
                 </tbody>
             </table>
+        </div>
+    </div>
+</div> 
+
+<div id="modal-cobranca" class="modal-container">
+    <div class="modal-content">
+        <span class="fechar-modal" id="fechar-cobranca">&times;</span>
+
+        <h2>Cobrança via PIX</h2>
+        <p>Informe o valor para gerar o QR Code</p>
+
+        <div class="input-grupo-modal">
+            <label for="valorCobrancaInput">Valor (R$)</label>
+            <input type="number" id="valorCobrancaInput" placeholder="Ex: 50.00" step="0.01">
+        </div>
+
+        <button id="btn-gerar-cobranca" class="btn-acao-modal">Gerar QR Code</button>
+
+        <div id="area-qrcode-gerado" style="display: none; text-align: center; margin-top: 20px;">
+            <p style="font-size: 14px; color: #555; margin-bottom: 10px;">Escaneie o código abaixo para pagar:</p>
+            <img id="imagem-qrcode-pix" src="" alt="QR Code PIX" style="max-width: 200px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"> 
+            <textarea id="texto-pix-escondido" style="position: absolute; left: -9999px;"></textarea>
+
+            <button id="btn-copiar-pix" class="btn-acao-modal botao-copiar" style="background-color: #2ecc71; margin-top: 15px; font-size: 15px;">
+                <i class="fas fa-copy"></i> Copiar Código (Pix Copia e Cola)
+            </button>
         </div>
     </div>
 </div>

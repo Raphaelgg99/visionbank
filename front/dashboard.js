@@ -505,7 +505,8 @@ if (btnFecharTransferencia) {
     btnFecharTransferencia.addEventListener("click", function() {
 
         // Esconde o modal alterando o display para "none"
-        modalTransferencia.style.display = "none";
+        modalTransferencia.style.display = "none"; 
+        desligarCamera();
     });
 }
 
@@ -807,4 +808,222 @@ if (linkVerTudo) {
             preencherExtratoDetalhado();
         }
     });
+} 
+
+const btnAbrirCobranca = document.getElementById('cobranca-pix');
+const modalCobranca = document.getElementById('modal-cobranca');
+const btnFecharCobranca = document.getElementById('fechar-cobranca');
+const btnGerarCobranca = document.getElementById('btn-gerar-cobranca');
+const inputValorCobranca = document.getElementById('valorCobrancaInput');
+const areaQrCodeGerado = document.getElementById('area-qrcode-gerado');
+const imagemQrCodePix = document.getElementById('imagem-qrcode-pix'); 
+const textoPixEscondido = document.getElementById('texto-pix-escondido');
+const btnCopiarPix = document.getElementById('btn-copiar-pix');
+
+// 2. Eventos para Abrir e Fechar o Modal
+btnAbrirCobranca.addEventListener('click', (event) => {
+    event.preventDefault(); // Evita que a página recarregue 
+    modalCobranca.style.display = 'flex';
+    
+    // Limpa o modal toda vez que abrir (para não mostrar cobrança velha)
+    areaQrCodeGerado.style.display = 'none';
+    imagemQrCodePix.src = '';
+    inputValorCobranca.value = ''; 
+    textoPixEscondido.value = '';
+    btnCopiarPix.innerHTML = '<i class="fas fa-copy"></i> Copiar Código (Pix Copia e Cola)';
+    btnCopiarPix.style.backgroundColor = ''; // Volta a cor original (verde do CSS)
+});
+
+btnFecharCobranca.addEventListener('click', () => {
+    modalCobranca.style.display = 'none';
+});
+
+// Fecha o modal se clicar fora da caixinha
+window.addEventListener('click', (event) => {
+    if (event.target === modalCobranca) {
+        modalCobranca.style.display = 'none';
+    }
+});
+
+// 3. A Mágica: Conectando com o Spring Boot
+btnGerarCobranca.addEventListener('click', async () => {
+    const valorDigitado = parseFloat(inputValorCobranca.value);
+
+    // Validação básica para ver se o usuário digitou um número válido
+    if (isNaN(valorDigitado) || valorDigitado <= 0) {
+        alert("Por favor, digite um valor válido para a cobrança.");
+        return;
+    }
+
+    // Pega o ID da conta logada. 
+    // Adapte caso você salve o ID do usuário de outra forma no login!
+    // Exemplo estático "1" só para você testar agora.
+    const numeroContaDestinatario = localStorage.getItem('usuarioId');  
+    const token = localStorage.getItem('token');
+
+        // Garante que o token esteja no formato correto: "Bearer token"
+        // Se já estiver formatado, mantém; senão, adiciona "Bearer "
+    const tokenFormatado = token.startsWith("Bearer ")
+        ? token
+        : `Bearer ${token}`;
+
+    try {
+        // Muda o texto do botão para dar feedback pro usuário
+        btnGerarCobranca.innerText = "Gerando...";
+        btnGerarCobranca.disabled = true;
+
+        // Bate na rota do Spring Boot 
+        const response = await fetch(`https://visionbank-back.onrender.com/pix/gerar/${numeroContaDestinatario}`, {
+            method: 'POST', 
+            headers: {
+                'Authorization': tokenFormatado, // Token JWT
+                'Content-Type': 'application/json' // Corpo em JSON
+            },
+            body: JSON.stringify({
+                valor: valorDigitado
+            })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            
+            // Joga o texto gigante do base64 gerado pelo Java dentro da tag <img>
+            imagemQrCodePix.src = data.qrCodeBase64; 
+            textoPixEscondido.value = data.conteudo;
+            
+            // Faz a div que estava escondida aparecer na tela!
+            areaQrCodeGerado.style.display = 'block'; 
+            
+        } else {
+            const erro = await response.text();
+            alert("Falha ao gerar cobrança: " + erro);
+        }
+    } catch (error) {
+        console.error("Erro ao conectar com a API:", error);
+        alert("Erro ao conectar com o servidor.");
+    } finally {
+        // Volta o botão ao normal
+        btnGerarCobranca.innerText = "Gerar QR Code";
+        btnGerarCobranca.disabled = false;
+    }
+});
+
+// NOVO: 4. Lógica do Botão "Copiar Código"
+btnCopiarPix.addEventListener('click', async () => {
+    const textoParaCopiar = textoPixEscondido.value;
+
+    if (!textoParaCopiar) {
+        alert("Nenhum código para copiar. Gere um QR Code primeiro.");
+        return;
+    }
+
+    try {
+        // Usa a API moderna da área de transferência
+        await navigator.clipboard.writeText(textoParaCopiar);
+
+        // Feedback visual: Muda o texto e a cor do botão
+        btnCopiarPix.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+        btnCopiarPix.style.backgroundColor = '#27ae60'; // Verde mais escuro
+
+        // Volta o botão ao normal depois de 2 segundos
+        setTimeout(() => {
+            btnCopiarPix.innerHTML = '<i class="fas fa-copy"></i> Copiar Código (Pix Copia e Cola)';
+            btnCopiarPix.style.backgroundColor = ''; // Volta a cor original
+        }, 2000);
+
+    } catch (err) {
+        console.error('Erro ao copiar: ', err);
+        // Fallback para navegadores mais antigos, se necessário
+        textoPixEscondido.select();
+        document.execCommand('copy');
+        alert('Código copiado para a área de transferência!');
+    }
+}); 
+
+// ==========================================
+// LÓGICA DO LEITOR DE QR CODE (PAGAR PIX)
+// ==========================================
+
+const btnAbrirCameraPix = document.getElementById('btn-abrir-camera-pix');
+const btnCancelarCamera = document.getElementById('btn-cancelar-camera');
+const areaTransferenciaManual = document.getElementById('area-transferencia-manual');
+const areaLeitorQr = document.getElementById('area-leitor-qr');
+
+let leitorScannerHtml5; // Variável global para guardar a câmera
+
+// 1. Botão que abre a câmera
+btnAbrirCameraPix.addEventListener('click', () => {
+    // Esconde os inputs manuais e mostra a div da câmera
+    areaTransferenciaManual.style.display = 'none';
+    areaLeitorQr.style.display = 'block';
+
+    // Inicia a biblioteca do QR Code
+    leitorScannerHtml5 = new Html5QrcodeScanner(
+        "leitor-camera",
+        { fps: 10, qrbox: { width: 200, height: 200 } },
+        false
+    );
+    
+    // Liga a câmera (pede permissão ao navegador se for a 1ª vez)
+    leitorScannerHtml5.render(sucessoAoLerQrCode, erroAoLerQrCode);
+});
+
+// 2. Botão de Cancelar a leitura
+btnCancelarCamera.addEventListener('click', () => {
+    desligarCamera();
+});
+
+function desligarCamera() {
+    if (leitorScannerHtml5) {
+        leitorScannerHtml5.clear(); // Desliga a luzinha da webcam/celular
+    }
+    // Volta a tela para o modo manual
+    areaLeitorQr.style.display = 'none';
+    areaTransferenciaManual.style.display = 'block';
+}
+
+// 3. O QUE ACONTECE QUANDO A CÂMERA ACHA UM QR CODE:
+async function sucessoAoLerQrCode(textoLidoDoQrCode) {
+    // Para a câmera imediatamente
+    desligarCamera();
+    
+    // Mostra um aviso pro usuário que está processando
+    alert("QR Code detectado! Processando o pagamento...");
+
+    const idContaLogada = localStorage.getItem('usuarioId');
+    const token = localStorage.getItem('token');
+    const tokenFormatado = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+
+    try {
+        // Dispara o texto lido lá para o backend pagar
+        const response = await fetch(`https://visionbank-back.onrender.com/pix/pagar/${idContaLogada}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': tokenFormatado,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                qrCodeTexto: textoLidoDoQrCode // Manda exatamente o que a câmera leu
+            })
+        });
+
+        const respostaBackend = await response.text();
+
+        if (response.ok) {
+            alert(`✅ ${respostaBackend}`);
+            // Aqui você pode chamar sua função de recarregar o saldo da tela se quiser!
+            document.getElementById('modal-transferencia').style.display = 'none'; // Fecha o modal
+        } else {
+            alert(`❌ Falha no pagamento: ${respostaBackend}`);
+        }
+    } catch (error) {
+        console.error("Erro no pagamento PIX:", error);
+        alert("Erro ao tentar conectar com o banco.");
+    }
+}
+
+// Função obrigatória para a biblioteca, não precisa preencher
+function erroAoLerQrCode(erro) {
+    // A câmera dispara erros invisíveis frame a frame até achar o código, 
+    // então deixamos vazio para não travar o console.
 }

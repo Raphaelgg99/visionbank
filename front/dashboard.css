@@ -376,4 +376,15 @@ tbody tr:last-child td {
 
 #link-ver-tudo:hover {
     text-decoration: underline;
+} 
+
+/* Estilo para o botão de Copiar (Pix Copia e Cola) */
+.botao-copiar {
+    background-color: #2ecc71; /* Verde */
+    margin-top: 15px; /* Espaço acima do botão */
+    font-size: 15px; /* Um pouco menor que o botão principal */
+}
+
+.botao-copiar:hover {
+    background-color: #27ae60; /* Verde mais escuro no hover */
 }

@@ -2,6 +2,8 @@ package com.simuladorbanco.BancoDigital.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.simuladorbanco.BancoDigital.dtos.TransacaoDTO;
+import com.simuladorbanco.BancoDigital.dtos.TransferenciaRequest;
 import com.simuladorbanco.BancoDigital.model.Conta;
 import com.simuladorbanco.BancoDigital.model.Transacao;
 import com.simuladorbanco.BancoDigital.repository.ContaRepository;
@@ -26,7 +28,7 @@ public class PixService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private TransacaoService transacaoService;
+    private ContaService contaService;
 
     public Map<String, String> gerarQrCodePix(Long numeroContaDestinatario, BigDecimal valor) {
         try {
@@ -55,11 +57,11 @@ public class PixService {
         }
     }
 
-    public Transacao pagarQrCodePix(Long numeroContaRemetente, String conteudoQrCode) {
+    public TransacaoDTO pagarQrCodePix(Long numeroContaRemetente, String conteudoQrCode) {
         try {
             // 1. Extrai os dados do texto do QR Code de forma elegante com Jackson
             JsonNode jsonNode = objectMapper.readTree(conteudoQrCode);
-            Long contaRecebedoraId = jsonNode.get("numeroContaDestinatario").asLong();
+            Long numeroContaDestinatario = jsonNode.get("numeroContaDestinatario").asLong();
             double valorPix = jsonNode.get("valor").asDouble();
             String expiracaoStr = jsonNode.get("expiracao").asText();
             LocalDateTime dataExpiracao = LocalDateTime.parse(expiracaoStr);
@@ -69,15 +71,11 @@ public class PixService {
                 throw new RuntimeException("Este QR Code do PIX já expirou!");
             }
 
-            // 2. Busca e valida as contas
-            Conta contaRemetente = contaRepository.findById(numeroContaRemetente)
-                    .orElseThrow(() -> new RuntimeException("Sua conta não foi encontrada"));
+            TransferenciaRequest request = new TransferenciaRequest();
+            request.setValor(valorPix);
+            request.setNumeroContaDestinatario(numeroContaDestinatario);
 
-            Conta contaDestinatario = contaRepository.findById(contaRecebedoraId)
-                    .orElseThrow(() -> new RuntimeException("Conta destino do QR Code inválida"));
-
-            // 3. Efetiva a transação usando o seu TransacaoService intocável
-            return transacaoService.adicionarTransacaoTransferencia(contaRemetente, contaDestinatario, valorPix);
+            return contaService.transferencia(request,numeroContaRemetente);
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao processar o pagamento do PIX: " + e.getMessage());
