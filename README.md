@@ -3,7 +3,7 @@
 
 🌐 **[Acesse o Projeto Online (Front-end)](https://visionbank-front.vercel.app/#)**
 
-📖 **[Acesse a Documentação da API (Swagger)](https://visionbank-back.onrender.com/swagger-ui/index.html#/)**
+📖 **[Acesse a Documentação da API (Swagger)](http://18.224.95.243:8080/swagger-ui/index.html#/)**
 
 
 O Vision Bank é uma aplicação Full-Stack que simula o ecossistema de um banco digital moderno. O objetivo principal deste projeto não é apenas realizar um simples CRUD, mas sim aplicar regras de negócio reais do mercado financeiro, garantindo transações seguras, histórico imutável, documentação clara e uma experiência de usuário (UX) fluida.
@@ -64,7 +64,4 @@ docker-compose up -d
 mvn spring-boot:run
 ```
 
-4. **Explore a API:** Com o servidor rodando, acesse a documentação interativa do Swagger pelo navegador:
-```text
-http://localhost:8080/swagger-ui/index.html
 ```
