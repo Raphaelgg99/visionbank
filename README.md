@@ -62,6 +62,5 @@ docker-compose up -d
 3. Instale as dependências e inicie a aplicação Spring Boot usando a sua IDE (IntelliJ, Eclipse, VS Code) ou via terminal:
 ```bash
 mvn spring-boot:run
-```
 
 ```
